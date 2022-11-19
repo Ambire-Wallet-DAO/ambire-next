@@ -20,9 +20,9 @@ type User = {
     avalanche?: string
   },
   address: string,
-  discord: string,
-  twitter: string,
-  discordId: string
+  discord?: string,
+  twitter?: string,
+  discordId?: string
 }
 // Initialize the cors middleware
 const cors = initMiddleware(
