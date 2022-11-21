@@ -49,9 +49,10 @@ export default async function leaderboardHandler(req: NextApiRequest, res: NextA
       fetch("https://api.guild.xyz/v1/guild/ambire/", { method: 'GET' })
     ])
     const [leaderboardJSON, guildJSON] = await Promise.all([leaderboardData.json(), guildData.json()])
-    res.status(200).json({ ...leaderboardJSON, guildJSON })
+    const roles = guildJSON.roles;
+    res.status(200).json({ ...leaderboardJSON, roles })
   } catch (err: any) {
-    res.setHeader("Allow", "GET");
-    res.status(405).end("Method Not Allowed");
+    res.setHeader("Allow", "GET")
+    res.status(405).end("Method Not Allowed")
   }
 }
