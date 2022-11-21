@@ -21,7 +21,14 @@ type User = {
   address: string,
   discord?: string,
   twitter?: string,
-  discordId?: string
+  discordId?: string,
+  roles?: Role[]
+}
+
+type Role = {
+  roleId: number,
+  name: string,
+  symobl: string
 }
 // Initialize the cors middleware
 const cors = initMiddleware(
