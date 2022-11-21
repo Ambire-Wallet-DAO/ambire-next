@@ -46,10 +46,10 @@ export default async function leaderboardHandler(req: NextApiRequest, res: NextA
   try {
     const [leaderboardData, guildData] = await Promise.all([
       fetch("https://api.crew3.xyz/communities/ambire/leaderboard", { method: 'GET', headers: { 'x-api-key': process.env.CREW3_API_KEY } }),
-      fetch("https://api.guild.xyz/v1/guild/ambire/", { method: 'GET' })
+      fetch("https://api.guild.xyz/v1/guild/the-bean-dao/", { method: 'GET' })
     ])
     const [leaderboardJSON, guildJSON] = await Promise.all([leaderboardData.json(), guildData.json()])
-    const roles = guildJSON.roles;
+    const roles = guildJSON.roles.map(role => { return { id: role.id, name: role.name, members: role.members } })
     res.status(200).json({ ...leaderboardJSON, roles })
   } catch (err: any) {
     res.setHeader("Allow", "GET")
