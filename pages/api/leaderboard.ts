@@ -26,9 +26,8 @@ type User = {
 }
 
 type Role = {
-  roleId: number,
+  id: number,
   name: string,
-  symobl: string
 }
 // Initialize the cors middleware
 const cors = initMiddleware(
