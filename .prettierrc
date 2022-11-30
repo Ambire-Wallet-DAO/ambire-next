@@ -1,0 +1,5 @@
+{
+  editor.formatOnSave: true,
+  "singleQuote": false,
+  "printWidth": 120
+}
