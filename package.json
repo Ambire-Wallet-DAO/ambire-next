@@ -11,16 +11,18 @@
     "@supabase/supabase-js": "^2.1.0",
     "@tidyjs/tidy": "^2.5.1",
     "cors": "^2.8.5",
+    "ethers": "^5.7.2",
     "grommet": "^2.17.2",
     "grommet-icons": "^4.5.0",
     "next": "latest",
     "react": "^18",
     "react-dom": "^18",
-    "styled-components": "^5.3.0"
+    "styled-components": "^5.3.0",
+    "wagmi": "^0.8.10"
   },
   "devDependencies": {
-    "@types/node": "18.11.9",
-    "@types/react": "18.0.25",
+    "@types/node": "18.11.10",
+    "@types/react": "18.0.26",
     "babel-plugin-styled-components": "^1.12.0",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
