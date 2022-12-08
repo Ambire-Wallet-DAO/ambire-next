@@ -11,7 +11,7 @@ const cors = initMiddleware(
   })
 )
 
-export default async function createUserHandler(req: NextApiRequest, res: NextApiResponse) {
+export default async function createUser(req: NextApiRequest, res: NextApiResponse) {
   await cors(req, res)
   const ethAddress = req.body.ethAddress
   try {
