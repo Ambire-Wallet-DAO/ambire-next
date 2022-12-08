@@ -10,7 +10,7 @@ const cors = initMiddleware(
   })
 )
 
-export default async function etagHandler(req: NextApiRequest, res: NextApiResponse) {
+export default async function refreshDatabase(req: NextApiRequest, res: NextApiResponse) {
   await cors(req, res)
   try {
     const response1 = await fetch('https://api.crew3.xyz/communities/ambire/leaderboard', {
@@ -20,11 +20,22 @@ export default async function etagHandler(req: NextApiRequest, res: NextApiRespo
     const etag = response1.headers.get('Etag')
     const response2 = await fetch('https://api.crew3.xyz/communities/ambire/leaderboard', {
       method: 'GET',
-      headers: { 'x-api-key': process.env.CREW3_API_KEY, 'If-None-Match': 'fdakfl;jadkfl;jdakfs;a' },
+      headers: { 'x-api-key': process.env.CREW3_API_KEY, 'If-None-Match': etag },
     })
-    res.status(response2.status).json({ etag })
+    switch (response2.status) {
+      case 200:
+        const data = await response2.json()
+        res.status(200).json({ data })
+        break
+
+      case 304:
+        res.status(304).json({})
+
+      default:
+        res.status(response2.status).json({})
+        break
+    }
   } catch (err: any) {
-    res.setHeader('Allow', 'GET')
-    res.status(405).end('Method Not Allowed')
+    res.status(401).json({ error: err.message })
   }
 }
