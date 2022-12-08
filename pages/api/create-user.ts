@@ -13,20 +13,43 @@ const cors = initMiddleware(
 
 export default async function createUser(req: NextApiRequest, res: NextApiResponse) {
   await cors(req, res)
-  const ethAddress = req.body.ethAddress
+  const { ethAddress } = req.query
   try {
-    const response = await fetch('https://api.crew3.xyz/communities/ambire/users', {
+    const queryString = 'https://api.crew3.xyz/communities/ambire/users?' + new URLSearchParams({ ethAddress })
+    const response = await fetch(queryString, {
       method: 'GET',
       headers: { 'x-api-key': process.env.CREW3_API_KEY },
-      body: JSON.stringify({ ethAddress }),
     })
-    let responseJSON = await response.json()
-    const { createdAt, updatedAt, ...user } = responseJSON
-    const { data, error } = await supabase.from('Users').insert([user])
+    const responseJSON = await response.json()
+
+    const queryString2 =
+      'https://api.crew3.xyz/communities/ambire/claimed-quests?' + new URLSearchParams({ user_id: responseJSON.id })
+    const response2 = await fetch(queryString2, {
+      method: 'GET',
+      headers: { 'x-api-key': process.env.CREW3_API_KEY },
+    })
+    const responseJSON2 = await response2.json()
+    const {
+      createdAt,
+      updatedAt,
+      guilds,
+      country,
+      city,
+      twitterFollowersCount,
+      tweetCount,
+      socialAccounts,
+      invites,
+      isBanned,
+      deleted,
+      displayedInformation,
+      role,
+      ...user
+    } = responseJSON
+    user.numberOfQuests = responseJSON2.totalCount
+    const { data, error } = await supabase.from('Users').insert(user)
     if (error) throw new Error(error.message)
-    res.status(200).json(data)
+    res.status(200).json(user)
   } catch (err: any) {
-    res.setHeader('Allow', 'POST')
-    res.status(405).end('Method Not Allowed')
+    res.status(401).json({ error: err.message })
   }
 }
