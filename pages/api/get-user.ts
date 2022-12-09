@@ -29,7 +29,8 @@ export default async function getUser(req: NextApiRequest, res: NextApiResponse)
       ),
       xp,
       level,
-      rank
+      rank,
+      numberOfQuests
       `
     )
     if (error) throw new Error(error.message)
