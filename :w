@@ -51,7 +51,7 @@ export default async function createUser(req: NextApiRequest, res: NextApiRespon
       .select()
     user['addresses'] = addressData['id']
     user.numberOfQuests = responseJSON2.totalCount
-    const { data: userData, error: userError } = await supabase.from('Users').insert(user).select()
+    const { data: userData, userError } = await supabase.from('Users').insert(user).select()
     if (addressError) throw new Error(addressError.message)
     if (userError) throw new Error(userError.message)
     res.status(200).json(user)
