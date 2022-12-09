@@ -14,9 +14,24 @@ const cors = initMiddleware(
 
 export default async function getUser(req: NextApiRequest, res: NextApiResponse) {
   await cors(req, res)
-  const ethAddress = req.body.ethAddress
+  const { ethAddress } = req.query
   try {
-    const { data, error } = await supabase.from('Users').select('*').eq('address', ethAddress)
+    const { data, error } = await supabase.from('Users').select(
+      `id,
+      name,
+      avatar,
+      discordHandle,
+      twitterUsername,
+      addresses (
+      polygon,
+      ethereum,
+      avalanche
+      ),
+      xp,
+      level,
+      rank
+      `
+    )
     if (error) throw new Error(error.message)
     res.status(200).json(data)
   } catch (err: any) {

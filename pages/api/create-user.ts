@@ -22,13 +22,6 @@ export default async function createUser(req: NextApiRequest, res: NextApiRespon
     })
     const responseJSON = await response.json()
 
-    const queryString2 =
-      'https://api.crew3.xyz/communities/ambire/claimed-quests?' + new URLSearchParams({ user_id: responseJSON.id })
-    const response2 = await fetch(queryString2, {
-      method: 'GET',
-      headers: { 'x-api-key': process.env.CREW3_API_KEY },
-    })
-    const responseJSON2 = await response2.json()
     const {
       createdAt,
       updatedAt,
@@ -45,12 +38,16 @@ export default async function createUser(req: NextApiRequest, res: NextApiRespon
       role,
       ...user
     } = responseJSON
-    const { data: addressData, error: addressError } = await supabase
-      .from('Addresses')
-      .insert(user['addresses'])
-      .select()
-    user['addresses'] = addressData['id']
-    user.numberOfQuests = responseJSON2.totalCount
+    const queryString2 =
+      'https://api.crew3.xyz/communities/ambire/claimed-quests?' + new URLSearchParams({ user_id: user.id })
+    const response2 = await fetch(queryString2, {
+      method: 'GET',
+      headers: { 'x-api-key': process.env.CREW3_API_KEY },
+    })
+    const responseJSON2 = await response2.json()
+    const { data: addressData, error: addressError } = await supabase.from('Addresses').insert(user.addresses).select()
+    user.addresses = addressData[0].id
+    user.numberOfQuests = responseJSON2.totalCount ? responseJSON2.totalCount : 0
     const { data: userData, error: userError } = await supabase.from('Users').insert(user).select()
     if (addressError) throw new Error(addressError.message)
     if (userError) throw new Error(userError.message)
