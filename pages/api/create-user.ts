@@ -61,6 +61,7 @@ export default async function createUser(req: NextApiRequest, res: NextApiRespon
     const { data: userData, error: userError } = await supabase.from('Users').insert(user).select()
     if (addressError) throw new Error(addressError.message)
     if (userError) throw new Error(userError.message)
+    if (rolesError) throw new Error(rolesError.message)
     res.status(200).json(user)
   } catch (err: any) {
     res.status(401).json({ error: err.message })
