@@ -15,12 +15,12 @@ export default async function createUser(req: NextApiRequest, res: NextApiRespon
   await cors(req, res)
   const { ethAddress } = req.query
   try {
-    const queryString = 'https://api.crew3.xyz/communities/ambire/users?' + new URLSearchParams({ ethAddress })
-    const response = await fetch(queryString, {
+    const usersQuery = 'https://api.crew3.xyz/communities/ambire/users?' + new URLSearchParams({ ethAddress })
+    const usersResponse = await fetch(usersQuery, {
       method: 'GET',
       headers: { 'x-api-key': process.env.CREW3_API_KEY },
     })
-    const responseJSON = await response.json()
+    const usersJSON = await usersResponse.json()
 
     const {
       createdAt,
@@ -37,26 +37,27 @@ export default async function createUser(req: NextApiRequest, res: NextApiRespon
       displayedInformation,
       role,
       ...user
-    } = responseJSON
-    const queryString2 =
+    } = usersJSON
+
+    const claimedQuestsQuery =
       'https://api.crew3.xyz/communities/ambire/claimed-quests?' + new URLSearchParams({ user_id: user.id })
-    const response2 = await fetch(queryString2, {
+    const claimedQuestsResponse = await fetch(claimedQuestsQuery, {
       method: 'GET',
       headers: { 'x-api-key': process.env.CREW3_API_KEY },
-    }
-    const responseJSON2 = await response2.json()
-    const queryString3 = `https://api.guild.xyz/v1/guild/member/the-bean-dao/${ethAddress}`
-    const response3 = await fetch(queryString3, {
+    })
+    const claimedQuestsJSON = await claimedQuestsResponse.json()
+    const guildQuery = `https://api.guild.xyz/v1/guild/member/the-bean-dao/${ethAddress}`
+    const guildResponse = await fetch(guildQuery, {
       method: 'GET',
     })
-    const responseJSON3 = await response3.json()
+    const guildJSON = await guildResponse.json()
     const { data: addressData, error: addressError } = await supabase.from('Addresses').insert(user.addresses).select()
-    const { data: rolesData, error: rolesError } = await supabase.from('Roles').insert(responseJSON3).select()
+    const { data: rolesData, error: rolesError } = await supabase.from('Roles').insert(guildJSON).select()
     user.addresses = addressData[0].id
 
     //TODO: figure out how roles should be structured in supabase
     user.roles = rolesData[0].id
-    user.numberOfQuests = responseJSON2.totalCount ? responseJSON2.totalCount : 0
+    user.numberOfQuests = claimedQuestsJSON.totalCount ? claimedQuestsJSON.totalCount : 0
     const { data: userData, error: userError } = await supabase.from('Users').insert(user).select()
     if (addressError) throw new Error(addressError.message)
     if (userError) throw new Error(userError.message)
