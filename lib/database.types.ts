@@ -31,16 +31,19 @@ export interface Database {
           created_at: string | null
           current_value: string | null
           id: string
+          updated_at: string | null
         }
         Insert: {
           created_at?: string | null
           current_value?: string | null
           id?: string
+          updated_at?: string | null
         }
         Update: {
           created_at?: string | null
           current_value?: string | null
           id?: string
+          updated_at?: string | null
         }
       }
       Roles: {
