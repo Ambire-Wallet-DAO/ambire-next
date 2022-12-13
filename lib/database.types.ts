@@ -5,100 +5,106 @@ export interface Database {
     Tables: {
       Addresses: {
         Row: {
-          id: number
           created_at: string | null
-          ethereum: string | null
+          id: string
           polygon: string | null
+          ethereum: string | null
           avalanche: string | null
         }
         Insert: {
-          id?: number
           created_at?: string | null
-          ethereum?: string | null
+          id?: string
           polygon?: string | null
+          ethereum?: string | null
           avalanche?: string | null
         }
         Update: {
-          id?: number
           created_at?: string | null
-          ethereum?: string | null
+          id?: string
           polygon?: string | null
+          ethereum?: string | null
           avalanche?: string | null
         }
       }
       Etag: {
         Row: {
           created_at: string | null
-          id: number
+          current_value: string | null
+          id: string
         }
         Insert: {
           created_at?: string | null
-          id: number
+          current_value?: string | null
+          id?: string
         }
         Update: {
           created_at?: string | null
-          id?: number
+          current_value?: string | null
+          id?: string
         }
       }
       Roles: {
         Row: {
-          id: number
           created_at: string | null
           name: string | null
+          xp: number | null
+          id: string
         }
         Insert: {
-          id?: number
           created_at?: string | null
           name?: string | null
+          xp?: number | null
+          id?: string
         }
         Update: {
-          id?: number
           created_at?: string | null
           name?: string | null
+          xp?: number | null
+          id?: string
         }
       }
       Users: {
         Row: {
-          userId: string
+          id: string
           created_at: string | null
           xp: number | null
           name: string | null
           avatar: string | null
           numberOfQuests: number | null
-          Address: string | null
-          discord: string | null
-          twitter: string | null
-          discordId: string | null
-          roles: number | null
-          Addresses: number | null
+          discordHandle: string | null
+          twitterUsername: string | null
+          level: number | null
+          rank: number | null
+          addresses: string | null
+          roles: string | null
         }
         Insert: {
-          userId: string
+          id: string
           created_at?: string | null
           xp?: number | null
           name?: string | null
           avatar?: string | null
           numberOfQuests?: number | null
-          Address?: string | null
-          discord?: string | null
-          twitter?: string | null
-          discordId?: string | null
-          roles?: number | null
-          Addresses?: number | null
+          discordHandle?: string | null
+          twitterUsername?: string | null
+          level?: number | null
+          rank?: number | null
+          addresses?: string | null
+          roles?: string | null
         }
         Update: {
-          userId?: string
+          id?: string
           created_at?: string | null
           xp?: number | null
           name?: string | null
           avatar?: string | null
           numberOfQuests?: number | null
-          Address?: string | null
-          discord?: string | null
-          twitter?: string | null
-          discordId?: string | null
-          roles?: number | null
-          Addresses?: number | null
+          discordHandle?: string | null
+          twitterUsername?: string | null
+          level?: number | null
+          rank?: number | null
+          addresses?: string | null
+          roles?: string | null
         }
       }
     }
