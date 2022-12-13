@@ -27,7 +27,8 @@ export default async function refreshDatabase(req: NextApiRequest, res: NextApiR
       const etag2 = leaderboardResponse.headers.get('etag')
       const { data, error } = await supabase.from('Etag').update({ current_value: etag2 }).eq('id', etagId).select()
       if (error) throw Error(error.message)
-      res.status(200).json(data)
+      const leaderboardJSON = await leaderboardResponse.json()
+      res.status(200).json({ updatedData: leaderboardJSON })
     } else {
       res.status(leaderboardResponse.status).json({})
     }
