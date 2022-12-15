@@ -30,8 +30,10 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
-        <body>
+        <Head>
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
+        </Head>
+        <body style={{background: "#24263D"}}>
           <Main />
           <NextScript />
         </body>
