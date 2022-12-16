@@ -24,3 +24,4 @@ type Role = {
   id: number
   name: string
 }
+export {};
