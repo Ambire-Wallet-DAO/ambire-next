@@ -16,11 +16,11 @@ export default async function createUser(req: NextApiRequest, res: NextApiRespon
   const { ethAddress } = req.query
   try {
     const usersQuery = 'https://api.crew3.xyz/communities/ambire/users?' + new URLSearchParams({ ethAddress })
-    const usersResponse = await fetch(usersQuery, {
+    const userResponse = await fetch(usersQuery, {
       method: 'GET',
       headers: { 'x-api-key': process.env.CREW3_API_KEY },
     })
-    const usersJSON = await usersResponse.json()
+    const userJSON = await userResponse.json()
 
     const {
       createdAt,
@@ -37,7 +37,7 @@ export default async function createUser(req: NextApiRequest, res: NextApiRespon
       displayedInformation,
       role,
       ...user
-    } = usersJSON
+    } = userJSON
 
     const claimedQuestsQuery =
       'https://api.crew3.xyz/communities/ambire/claimed-quests?' + new URLSearchParams({ user_id: user.id })
