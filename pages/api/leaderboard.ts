@@ -14,7 +14,7 @@ const cors = initMiddleware(
 export default async function leaderboardHandler(req: NextApiRequest, res: NextApiResponse) {
   await cors(req, res)
   try {
-    const { data, error } = await supabase.from('Users').select('name, xp, numberOfQuests, roles("*")')
+    const { data, error } = await supabase.from('Users').select('name, xp, numberOfQuests, roles')
     if (error) throw Error(error.message)
     res.status(200).json(data)
   } catch (err: any) {
